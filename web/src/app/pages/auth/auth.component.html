@@ -1,0 +1,16 @@
+<app-dialog #storagePrompt>
+  <h1>Accept LocalStorage</h1>
+  <p>
+    This Application uses LocalStorage. The LocalStorage is for saving the user login in the browser.
+    When Declining the LocalStorage the Application will still be usable.
+    The only thing different is, that it is required to log in everytime you visit the application
+  </p>
+
+  <app-dialog-action-bar>
+    <div right>
+      <button mat-button color="primary" (click)="accept()"> Accept </button>
+      <button mat-button (click)="decline()"> Decline </button>
+    </div>
+  </app-dialog-action-bar>
+</app-dialog>
+

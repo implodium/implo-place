@@ -1,0 +1,15 @@
+version: '3.7'
+
+services:
+  web:
+    image: ghcr.io/implodium/implo-places/web
+    build: web
+    depends_on: [server]
+    container_name: implo-places-web
+    ports:
+      - "80:80"
+
+  server:
+    image: ghcr.io/implodium/implo-places/server
+    build: server
+    container_name: implo-places-server

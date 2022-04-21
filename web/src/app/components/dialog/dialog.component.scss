@@ -1,0 +1,44 @@
+.properties {
+  --animation-speed: 0.5s;
+}
+
+.dialog-container {
+  position: fixed;
+  top: 0; left: 0;
+  z-index: 1;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.0);
+  transition-property: all;
+  transition-duration: var(--animation-speed);
+
+  display: none;
+  justify-content: center;
+  align-items: center;
+}
+
+.dialog-container-open {
+  background-color: rgba(0, 0, 0, 0.6);
+}
+
+.dialog {
+  display: block;
+  width: auto;
+  height: auto;
+  padding: 3rem;
+  transition-property: all;
+  transition-duration: var(--animation-speed);
+  background-color: white;
+  overflow: hidden;
+  transform: scale(0,0);
+  border-radius: 20px;
+  max-width: 30vw;
+}
+
+.dialog-open {
+  transform: scale(1,1);
+}
+
+.dialog-action-bar {
+  background-color: red;
+}
