@@ -1,4 +1,17 @@
 
+<nav>
+  <button mat-icon-button [matMenuTriggerFor]="menu">
+    <mat-icon>settings</mat-icon>
+  </button>
+
+  <mat-menu #menu="matMenu">
+    <button mat-menu-item (click)="clearCookies()">
+      <mat-icon>delete</mat-icon>
+      <span>Clear Cookies</span>
+    </button>
+  </mat-menu>
+</nav>
+
 <app-page>
   <router-outlet></router-outlet>
 </app-page>

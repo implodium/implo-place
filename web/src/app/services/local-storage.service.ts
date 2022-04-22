@@ -47,4 +47,8 @@ export class LocalStorageService {
     const isActivatedString = this.get(this.storageIsActivatedKey, true)
     return isActivatedString === 'true'
   }
+
+  clear() {
+    localStorage.clear()
+  }
 }

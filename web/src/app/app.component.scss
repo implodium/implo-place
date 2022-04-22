@@ -1,0 +1,16 @@
+nav {
+  position: fixed;
+  width: 95%;
+  padding: 2.5%;
+  display: flex;
+  justify-content: flex-end;
+
+  --icon-size: 3rem
+}
+
+nav mat-icon {
+  border-radius: 100%;
+  padding: 0.4rem;
+  transform: scale(2);
+}
+
