@@ -22,6 +22,6 @@ export class LoginComponent implements OnInit {
   }
 
   authenticate() {
-    window.open(this.authConfig!.redirectURL)
+    location.assign(this.authConfig!.redirectURL)
   }
 }
