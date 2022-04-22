@@ -1,10 +1,13 @@
 <app-dialog #storagePrompt>
-  <h1>Accept LocalStorage</h1>
+  <h1>Cookies</h1>
   <p>
-    This Application uses LocalStorage. The LocalStorage is for saving the user login in the browser.
-    When Declining the LocalStorage the Application will still be usable.
-    The only thing different is, that it is required to log in everytime you visit the application
+    This Page uses Cookies to remember your Login. The Page is still usable without you agreeing to the cookies.
+    Without the cookies, it is required to login every time you visit the page.
   </p>
+
+  <mat-card class="warning-card">
+    <mat-icon>warning</mat-icon> <span>The page uses some required cookies even when declining. This is for disabling this message after the first visit.</span>
+  </mat-card>
 
   <app-dialog-action-bar>
     <div right>

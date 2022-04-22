@@ -13,6 +13,8 @@ import {HttpClientModule} from "@angular/common/http";
 import { AuthComponent } from './pages/auth/auth.component';
 import { DialogComponent } from './components/dialog/dialog.component';
 import { DialogActionBarComponent } from './components/dialog-action-bar/dialog-action-bar.component';
+import {MatIconModule} from "@angular/material/icon";
+import {MatMenuModule} from "@angular/material/menu";
 
 @NgModule({
   declarations: [
@@ -24,14 +26,16 @@ import { DialogActionBarComponent } from './components/dialog-action-bar/dialog-
     DialogComponent,
     DialogActionBarComponent
   ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    BrowserAnimationsModule,
-    MatCardModule,
-    MatButtonModule,
-    HttpClientModule
-  ],
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        BrowserAnimationsModule,
+        MatCardModule,
+        MatButtonModule,
+        HttpClientModule,
+        MatIconModule,
+        MatMenuModule
+    ],
   providers: [],
   bootstrap: [AppComponent]
 })

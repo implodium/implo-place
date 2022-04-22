@@ -9,7 +9,7 @@
   width: 100vw;
   height: 100vh;
   background-color: rgba(0, 0, 0, 0.0);
-  transition-property: all;
+  transition-property: background-color;
   transition-duration: var(--animation-speed);
 
   display: none;
@@ -26,7 +26,7 @@
   width: auto;
   height: auto;
   padding: 3rem;
-  transition-property: all;
+  transition-property: transform;
   transition-duration: var(--animation-speed);
   background-color: white;
   overflow: hidden;

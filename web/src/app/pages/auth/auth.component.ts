@@ -22,24 +22,27 @@ export class AuthComponent implements AfterViewInit  {
   ) { }
 
   async ngAfterViewInit() {
-    if (this.storage.isActivated) {
+    if (this.storage.choiceIsMade) {
       await this.saveToken()
       await this.navigateToHome()
     } else {
-      this.dialog.open()
+      await this.dialog.open()
       this.changeRef.detectChanges()
     }
   }
 
   async decline() {
-    this.dialog.close()
+    await this.dialog.close()
+    this.storage.deactivate()
     await this.saveToken()
+    // await this.navigateToHome()
   }
 
   async accept() {
-    this.dialog.close()
+    await this.dialog.close()
     this.storage.activate()
     await this.saveToken()
+    await this.navigateToHome()
   }
 
   async saveToken() {

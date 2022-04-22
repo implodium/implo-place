@@ -1,11 +1,12 @@
-import {Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
+import {Observable, timeout} from "rxjs";
 
 @Component({
   selector: 'app-dialog',
   templateUrl: './dialog.component.html',
   styleUrls: ['./dialog.component.scss']
 })
-export class DialogComponent implements OnInit {
+export class DialogComponent implements AfterViewInit {
 
   @Input()
   animationSpeedInSeconds = 0.2
@@ -16,23 +17,18 @@ export class DialogComponent implements OnInit {
   @ViewChild('dialogContainer')
   dialogContainer!: ElementRef
 
-  isOpen: boolean = false;
+  private dialogDiv!: HTMLDivElement
+
+  private dialogContainerDiv!: HTMLDivElement
+
+  private isOpen: boolean = false;
+
+  private readonly milliToSecondsConstant = 1000
 
   constructor() { }
 
-  ngOnInit(): void {
-
-  }
-
-  open() {
-    this.isOpen = true
-    const [divDialog, dialogContainerDiv] = this.divReferences
-
-    dialogContainerDiv.style.display = 'flex'
-    requestAnimationFrame(() => {
-      dialogContainerDiv.classList.add('dialog-container-open')
-      divDialog.classList.add('dialog-open')
-    })
+  ngAfterViewInit(): void {
+    [this.dialogDiv, this.dialogContainerDiv] = this.divReferences
   }
 
   private get divReferences() {
@@ -40,18 +36,59 @@ export class DialogComponent implements OnInit {
       .map(ref => ref.nativeElement as HTMLDivElement)
   }
 
-  close() {
+  async open() {
+    this.isOpen = true
+    await this.openAnimation()
+  }
+
+
+  private async openAnimation() {
+    this.setContainerDisplayFlex()
+    this.addClassesInAnimationFrame()
+    await this.animationDuration()
+  }
+
+  private setContainerDisplayFlex() {
+    this.dialogContainerDiv.style.display = 'flex'
+  }
+
+  private addClassesInAnimationFrame() {
+    requestAnimationFrame(() => {
+      this.dialogContainerDiv.classList.add('dialog-container-open')
+      this.dialogDiv.classList.add('dialog-open')
+    })
+  }
+
+  private async animationDuration() {
+    return new Promise<void>(resolve => {
+      setTimeout(() => {
+        resolve()
+      }, this.animationSpeedInSeconds * this.milliToSecondsConstant)
+    })
+  }
+
+  async close() {
     this.isOpen = false
-    const [divDialog, dialogContainerDiv] = this.divReferences
+    await this.closeAnimation()
+  }
 
-    dialogContainerDiv.classList.remove('dialog-container-open')
-    divDialog.classList.remove('dialog-open')
+  private async closeAnimation() {
+    this.removeOpenClasses()
+    await this.setDisplayNoneAfterTimeOut()
+  }
 
-    setTimeout(() => {
-      requestAnimationFrame(() => {
-        dialogContainerDiv.style.display = 'none'
-      })
-    }, this.animationSpeedInSeconds * 1000)
+  private removeOpenClasses() {
+    this.dialogContainerDiv.classList.remove('dialog-container-open')
+    this.dialogDiv.classList.remove('dialog-open')
+  }
+
+  private setDisplayNoneAfterTimeOut() {
+    return new Promise<void>(resolve => {
+      setTimeout(() => {
+        this.dialogContainerDiv.style.display = 'none'
+        resolve();
+      }, this.animationSpeedInSeconds * this.milliToSecondsConstant)
+    })
   }
 
 }

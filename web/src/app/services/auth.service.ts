@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import Store from "../store/Store";
 import {TokenDto} from "../typings/token-dto";
 import {LocalStorageService} from "./local-storage.service";
+import {forkJoin} from "rxjs";
 
 @Injectable({
   providedIn: 'root'
