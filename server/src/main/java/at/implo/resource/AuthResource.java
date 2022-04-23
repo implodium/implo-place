@@ -20,7 +20,6 @@ public class AuthResource {
 
     @POST
     @Path("register")
-    @Produces(MediaType.TEXT_PLAIN)
     public Response register(@QueryParam("token") String token) {
         if (token == null) {
             return Response.notAcceptable(null)
