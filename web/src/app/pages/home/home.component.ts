@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import {Router} from "@angular/router";
 import {AuthService} from "../../services/auth.service";
+import {AuthRestService} from "../../services/auth-rest.service";
+import {UserDTO} from "../../typings/user-dto";
 
 @Component({
   selector: 'app-home',
@@ -9,12 +11,17 @@ import {AuthService} from "../../services/auth.service";
 })
 export class HomeComponent implements OnInit {
 
-  constructor(private token: AuthService, private router: Router) { }
+  user?: UserDTO
+
+  constructor(private token: AuthService, private router: Router, private readonly authRest: AuthRestService) { }
 
   async ngOnInit(): Promise<void> {
     if (!this.token.isAvailable) {
       await this.redirectToLogin()
     }
+
+    this.authRest.register()
+      .subscribe(user => this.user = user)
   }
 
   private async redirectToLogin() {
