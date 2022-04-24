@@ -1,13 +1,13 @@
 package at.implo.resource;
 
-import at.implo.discord.DiscordRest;
+import at.implo.control.DiscordController;
+import at.implo.rest.DiscordRest;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 
 import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import javax.ws.rs.core.Variant;
 
 @Path("auth")
 @Consumes(MediaType.APPLICATION_JSON)
@@ -15,8 +15,7 @@ import javax.ws.rs.core.Variant;
 public class AuthResource {
 
     @Inject
-    @RestClient
-    DiscordRest rest;
+    DiscordController discordController;
 
     @POST
     @Path("register")
@@ -26,7 +25,7 @@ public class AuthResource {
                     .entity("token query parameter required")
                     .build();
         } else {
-            final var user = this.rest.getUser("Bearer " + token);
+            final var user = this.discordController.getUserByToken(token);
             return Response.ok(user).build();
         }
     }

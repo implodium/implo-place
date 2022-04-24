@@ -1,4 +1,4 @@
-package at.implo.discord;
+package at.implo.rest;
 
 import at.implo.dto.UserResponseDTO;
 import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
@@ -13,6 +13,6 @@ public interface DiscordRest {
 
     @GET
     @Path("@me")
-    UserResponseDTO getUser(@HeaderParam("Authorization") String authorization);
+    UserResponseDTO getUserByToken(@HeaderParam("Authorization") String authorization);
 
 }
