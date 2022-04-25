@@ -2,19 +2,17 @@ package at.implo.resource;
 
 import at.implo.control.AuthController;
 import at.implo.control.DiscordController;
-import at.implo.rest.DiscordRest;
 import lombok.val;
-import org.eclipse.microprofile.rest.client.inject.RestClient;
 
 import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-@Path("auth")
+@Path("user")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
-public class AuthResource {
+public class UserResource {
 
     @Inject
     DiscordController discordController;
