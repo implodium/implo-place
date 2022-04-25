@@ -1,2 +1,8 @@
-<h1 *ngIf="user">Hello {{user.displayName}}#{{user.discriminator}}</h1>
+<div class="home-page">
+  <h1 *ngIf="user">{{ greeting }} {{user.displayName}}#{{user.discriminator}}</h1>
+  <h2>Cooldown: {{cooldown}}</h2>
+</div>
+
+
+
 

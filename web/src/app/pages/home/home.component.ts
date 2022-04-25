@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import {Router} from "@angular/router";
 import {AuthService} from "../../services/auth.service";
-import {AuthRestService} from "../../services/auth-rest.service";
 import {UserResponseDto} from "../../typings/user-response-dto";
 import {UserService} from "../../services/user.service";
+import {GreetingService} from "../../services/greeting.service";
 
 @Component({
   selector: 'app-home',
@@ -13,12 +13,13 @@ import {UserService} from "../../services/user.service";
 export class HomeComponent implements OnInit {
 
   user?: UserResponseDto
+  cooldown?: number
 
   constructor(
     private readonly token: AuthService,
     private readonly router: Router,
-    private readonly authRest: AuthRestService,
-    private readonly userService: UserService
+    private readonly userService: UserService,
+    private readonly greetingService: GreetingService
   ) { }
 
   async ngOnInit(): Promise<void> {
@@ -32,5 +33,9 @@ export class HomeComponent implements OnInit {
 
   private async redirectToLogin() {
     await this.router.navigate(['login'])
+  }
+
+  get greeting(): string {
+    return this.greetingService.greeting
   }
 }
