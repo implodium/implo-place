@@ -38,4 +38,8 @@ export class HomeComponent implements OnInit {
   get greeting(): string {
     return this.greetingService.greeting
   }
+
+  draw() {
+    this.userService.requestClearName()
+  }
 }

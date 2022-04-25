@@ -54,4 +54,12 @@ public class UserController {
 
         return user;
     }
+
+    public User clearName(UserResponseDTO response) {
+        val user = this.userDao.findById(response.id());
+        user.setDisplayName(response.username());
+        user.setDisplayNameOverwrite(false);
+
+        return user;
+    }
 }

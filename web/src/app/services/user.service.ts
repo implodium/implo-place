@@ -64,4 +64,23 @@ export class UserService extends BaseRestService {
       })
     )
   }
+
+  clearName() {
+    const response = this.requestClearName();
+
+    response.subscribe(user => {
+      this.user.set(user)
+    })
+  }
+
+  requestClearName() {
+    return this.auth.token.pipe(
+      mergeMap(token => {
+        return this.http.post<User>(
+          `${this.resourcePath}/clear-name?token=${token!.value}`,
+          null
+        )
+      })
+    )
+  }
 }

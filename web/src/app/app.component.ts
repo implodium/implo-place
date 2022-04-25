@@ -43,4 +43,9 @@ export class AppComponent {
       this.err = 'name should not be empty'
     }
   }
+
+  async clearName() {
+    this.userService.clearName()
+    await this.changeNameDialog.close()
+  }
 }

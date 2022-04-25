@@ -1,6 +1,7 @@
 <div class="home-page">
   <h1 *ngIf="user">{{ greeting }} {{user.displayName}}#{{user.discriminator}}</h1>
   <h2>Cooldown: {{cooldown}}</h2>
+  <button mat-button color="primary" (click)="draw()">Draw Pixel</button>
 </div>
 
 
