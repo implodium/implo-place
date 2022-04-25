@@ -5,12 +5,39 @@
   </button>
 
   <mat-menu #menu="matMenu">
+    <button mat-menu-item (click)="changeName()">
+      <mat-icon>settings</mat-icon>
+      <span>Change Display Name</span>
+    </button>
     <button mat-menu-item (click)="clearCookies()">
       <mat-icon>delete</mat-icon>
       <span>Clear Cookies</span>
     </button>
   </mat-menu>
 </nav>
+
+<app-dialog #changeNameDialog>
+
+  <h1>Change Name</h1>
+
+  <mat-form-field appearance="fill">
+    <mat-label>New Name</mat-label>
+    <input matInput placeholder="Display Name" type="text" [(ngModel)]="currentName">
+  </mat-form-field>
+
+  <mat-card *ngIf="err" class="info-card error-card">
+    <mat-icon>error</mat-icon>
+    <span>{{ err }}</span>
+  </mat-card>
+
+  <app-dialog-action-bar>
+    <div right>
+      <button mat-button (click)="cancel()">cancel</button>
+      <button mat-button color="primary" (click)="ok()">ok</button>
+    </div>
+  </app-dialog-action-bar>
+</app-dialog>
+
 
 <app-page>
   <router-outlet></router-outlet>

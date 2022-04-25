@@ -10,7 +10,7 @@ import javax.inject.Inject;
 import javax.transaction.Transactional;
 
 @ApplicationScoped
-public class AuthController {
+public class UserController {
 
     @Inject
     UserDao userDao;
@@ -46,4 +46,12 @@ public class AuthController {
         return userDao.save(newUser);
     }
 
+    @Transactional
+    public User changeName(String newName, UserResponseDTO response) {
+        val user = userDao.findById(response.id());
+        user.setDisplayName(newName);
+        user.setDisplayNameOverwrite(true);
+
+        return user;
+    }
 }

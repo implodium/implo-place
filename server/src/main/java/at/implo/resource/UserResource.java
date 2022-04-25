@@ -1,7 +1,8 @@
 package at.implo.resource;
 
-import at.implo.control.AuthController;
+import at.implo.control.UserController;
 import at.implo.control.DiscordController;
+import at.implo.dto.ChangeNameRequest;
 import lombok.val;
 
 import javax.inject.Inject;
@@ -18,7 +19,7 @@ public class UserResource {
     DiscordController discordController;
 
     @Inject
-    AuthController authController;
+    UserController userController;
 
     @POST
     @Path("register")
@@ -38,8 +39,21 @@ public class UserResource {
 
     Response registerUser(String token) {
         val userResponse = this.discordController.getUserByToken(token);
-        val user = this.authController.register(userResponse);
+        val user = this.userController.register(userResponse);
         return Response.ok(user).build();
     }
 
+    @POST
+    @Path("change-name")
+    public Response changeName(@QueryParam("token") String token, ChangeNameRequest request) {
+        if (token != null) {
+            val userResponse = discordController.getUserByToken(token);
+            val user = userController.changeName(request.newName(), userResponse);
+
+            return Response.ok(user)
+                    .build();
+        } else {
+            return UserResource.tokenNotProvided();
+        }
+    }
 }

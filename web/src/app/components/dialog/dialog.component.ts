@@ -1,5 +1,6 @@
-import {AfterViewInit, Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, HostListener, Input, OnInit, ViewChild} from '@angular/core';
 import {Observable, timeout} from "rxjs";
+import {elementEventFullName} from "@angular/compiler/src/view_compiler/view_compiler";
 
 @Component({
   selector: 'app-dialog',
@@ -15,7 +16,7 @@ export class DialogComponent implements AfterViewInit {
   dialog!: ElementRef
 
   @ViewChild('dialogContainer')
-  dialogContainer!: ElementRef
+  private dialogContainer!: ElementRef
 
   private dialogDiv!: HTMLDivElement
 
@@ -68,6 +69,12 @@ export class DialogComponent implements AfterViewInit {
   }
 
   async close() {
+    this.isOpen = false
+    await this.closeAnimation()
+  }
+
+  async backgroundClose(event: Event) {
+    event.stopImmediatePropagation()
     this.isOpen = false
     await this.closeAnimation()
   }

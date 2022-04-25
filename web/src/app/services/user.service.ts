@@ -7,6 +7,7 @@ import {map, mergeMap, Observable} from "rxjs";
 import {AuthService} from "./auth.service";
 import Store from "../store/Store";
 import {User} from "../typings/user";
+import {ChangeNameRequest} from "../typings/change-name-request";
 
 @Injectable({
   providedIn: 'root'
@@ -36,12 +37,30 @@ export class UserService extends BaseRestService {
   private requestRegister() {
     return this.auth.token.pipe(
       mergeMap(token => {
-        console.log(`${this.resourcePath}/register?token=${token!.value}`)
         return this.http
           .post<User>(
             `${this.resourcePath}/register?token=${token!.value}`,
             null
           )
+      })
+    )
+  }
+
+  changeName(newName: string) {
+    const response = this.requestChangeName({newName})
+
+    response.subscribe(user => {
+      this.user.set(user)
+    })
+  }
+
+  requestChangeName(request: ChangeNameRequest) {
+    return this.auth.token.pipe(
+      mergeMap(token => {
+        return this.http.post<User>(
+          `${this.resourcePath}/change-name?token=${token!.value}`,
+          request
+        )
       })
     )
   }

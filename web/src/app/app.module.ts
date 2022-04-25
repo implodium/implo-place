@@ -15,6 +15,9 @@ import { DialogComponent } from './components/dialog/dialog.component';
 import { DialogActionBarComponent } from './components/dialog-action-bar/dialog-action-bar.component';
 import {MatIconModule} from "@angular/material/icon";
 import {MatMenuModule} from "@angular/material/menu";
+import {MatFormFieldModule} from "@angular/material/form-field";
+import {MatInputModule} from "@angular/material/input";
+import {FormsModule} from "@angular/forms";
 
 @NgModule({
   declarations: [
@@ -34,7 +37,10 @@ import {MatMenuModule} from "@angular/material/menu";
         MatButtonModule,
         HttpClientModule,
         MatIconModule,
-        MatMenuModule
+        MatMenuModule,
+        MatFormFieldModule,
+        MatInputModule,
+        FormsModule
     ],
   providers: [],
   bootstrap: [AppComponent]
