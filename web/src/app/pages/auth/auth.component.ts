@@ -36,7 +36,7 @@ export class AuthComponent implements AfterViewInit  {
     await this.dialog.close()
     this.storage.deactivate()
     await this.saveToken()
-    // await this.navigateToHome()
+    await this.navigateToHome()
   }
 
   async accept() {
