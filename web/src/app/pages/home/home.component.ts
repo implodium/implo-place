@@ -13,7 +13,11 @@ export class HomeComponent implements OnInit {
 
   user?: UserDTO
 
-  constructor(private token: AuthService, private router: Router, private readonly authRest: AuthRestService) { }
+  constructor(
+    private readonly token: AuthService,
+    private readonly router: Router,
+    private readonly authRest: AuthRestService,
+  ) { }
 
   async ngOnInit(): Promise<void> {
     if (!this.token.isAvailable) {

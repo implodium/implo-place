@@ -1,7 +1,9 @@
 package at.implo.resource;
 
+import at.implo.control.AuthController;
 import at.implo.control.DiscordController;
 import at.implo.rest.DiscordRest;
+import lombok.val;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 
 import javax.inject.Inject;
@@ -17,17 +19,29 @@ public class AuthResource {
     @Inject
     DiscordController discordController;
 
+    @Inject
+    AuthController authController;
+
     @POST
     @Path("register")
     public Response register(@QueryParam("token") String token) {
         if (token == null) {
-            return Response.notAcceptable(null)
-                    .entity("token query parameter required")
-                    .build();
+            return tokenNotProvided();
         } else {
-            final var user = this.discordController.getUserByToken(token);
-            return Response.ok(user).build();
+            return registerUser(token);
         }
+    }
+
+    static Response tokenNotProvided() {
+        return Response.notAcceptable(null)
+                .entity("token query parameter required")
+                .build();
+    }
+
+    Response registerUser(String token) {
+        val userResponse = this.discordController.getUserByToken(token);
+        val user = this.authController.register(userResponse);
+        return Response.ok(user).build();
     }
 
 }

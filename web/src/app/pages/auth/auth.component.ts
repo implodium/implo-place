@@ -3,6 +3,7 @@ import {AuthService} from "../../services/auth.service";
 import {DialogComponent} from "../../components/dialog/dialog.component";
 import {LocalStorageService} from "../../services/local-storage.service";
 import {Router} from "@angular/router";
+import {AuthRestService} from "../../services/auth-rest.service";
 
 @Component({
   selector: 'app-auth',

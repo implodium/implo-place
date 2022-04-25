@@ -1,5 +1,5 @@
 export interface UserDTO {
   discriminator: string,
-  username: string,
+  displayName: string,
   id: string
 }
