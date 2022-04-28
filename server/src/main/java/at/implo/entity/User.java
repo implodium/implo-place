@@ -1,25 +1,29 @@
 package at.implo.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
 @Table(name = "PUSER")
 @Data
-@AllArgsConstructor
+@RequiredArgsConstructor
 @NoArgsConstructor
 public class User {
 
-    @Id @Getter private String id;
+    @Id @Getter @NonNull
+    private String id;
 
-    @Getter private String displayName;
+    @Getter @NonNull
+    private String displayName;
 
-    @Getter private String discriminator;
+    @Getter @NonNull
+    private String discriminator;
 
-    @Getter private boolean displayNameOverwrite;
+    @Getter @NonNull
+    private boolean displayNameOverwrite;
+
+    @OneToOne(cascade = CascadeType.ALL) @Getter
+    private Cooldown cooldown = new Cooldown();
 
 }
