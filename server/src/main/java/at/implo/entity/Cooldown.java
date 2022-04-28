@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @NoArgsConstructor
@@ -31,19 +32,22 @@ public @Data @Entity class Cooldown {
     private User user;
 
     @Transient
-    private List<CooldownSubscribeCallBack> subscriber;
+    private List<CooldownSubscribeCallBack> subscriber = new ArrayList<>();
 
     @Transient
     public void decrement() {
-        if (this.minutes == 0 && this.seconds == 0) {
-            finish();
-            return;
-        }
+        if (isActive()) {
+            if (this.minutes == 0 && this.seconds == 0) {
+                finish();
+                return;
+            }
 
-        if (this.seconds == 0) {
-            minutes--;
-        } else {
-            seconds--;
+            if (this.seconds == 0) {
+                minutes--;
+                seconds = 60;
+            } else {
+                seconds--;
+            }
         }
     }
 
@@ -52,6 +56,7 @@ public @Data @Entity class Cooldown {
         active = true;
         this.minutes = minutes;
         this.seconds = seconds;
+        notifySubscriber();
     }
 
     @Transient
@@ -62,12 +67,15 @@ public @Data @Entity class Cooldown {
     @Transient
     private void finish() {
         this.active = false;
-        notifyFinish();
+        notifySubscriber();
     }
 
     @Transient
-    private void notifyFinish() {
-        subscriber.forEach(CooldownSubscribeCallBack::callback);
+    private void notifySubscriber() {
+        System.out.println("Subscriber Count:" + subscriber.size());
+        for (CooldownSubscribeCallBack cooldownSubscribeCallBack : subscriber) {
+            cooldownSubscribeCallBack.callback();
+        }
     }
 
     @Transient
@@ -75,7 +83,8 @@ public @Data @Entity class Cooldown {
         return new CooldownDTO(
                 this.getMinutes(),
                 this.getSeconds(),
-                this.isActive()
+                this.isActive(),
+                false
         );
     }
 

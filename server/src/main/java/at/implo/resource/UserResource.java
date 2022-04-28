@@ -1,5 +1,6 @@
 package at.implo.resource;
 
+import at.implo.control.CooldownController;
 import at.implo.control.UserController;
 import at.implo.control.DiscordController;
 import at.implo.dto.ChangeNameRequest;
@@ -23,6 +24,9 @@ public class UserResource {
     @Inject
     UserController userController;
 
+    @Inject
+    CooldownController cooldownController;
+
     @POST
     @Path("register")
     public Response registerResource(@QueryParam("token") String token) {
@@ -42,6 +46,7 @@ public class UserResource {
     Response register(String token) {
         val userResponse = this.discordController.getUserByToken(token);
         val user = this.userController.register(userResponse);
+        cooldownController.loadCooldown(user.getCooldown());
         return Response.ok(user).build();
     }
 

@@ -1,65 +1,72 @@
 package at.implo.socket;
 
+import at.implo.control.CooldownController;
+import at.implo.dto.CooldownDTO;
+import at.implo.dto.CooldownSession;
+import at.implo.entity.Cooldown;
+import at.implo.util.JsonUtil;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.val;
+
 import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
 import javax.websocket.*;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-@ServerEndpoint("/chat/{username}")
+@ServerEndpoint("/cooldown-socket/{token}")
 @ApplicationScoped
 public class CooldownSocket {
 
+    @Inject
+    CooldownController cooldownController;
+
+    @Inject
+    JsonUtil jsonUtil;
 
     Map<String, Session> sessions = new ConcurrentHashMap<>();
 
     @OnOpen
-    public void onOpen(Session session, @PathParam("username") String username) {
-        System.out.println("beginning socket");
-        sessions.put(username, session);
-    }
-
-    @OnClose
-    public void onClose(Session session, @PathParam("username") String username) {
-        sessions.remove(username);
-        broadcast("User " + username + " left");
-    }
-
-    @OnError
-    public void onError(Session session, @PathParam("username") String username, Throwable throwable) {
-        sessions.remove(username);
-        broadcast("User " + username + " left on error: " + throwable);
+    public void onOpen(Session session, @PathParam("token") String token) {
+        sessions.put(session.getId(), session);
     }
 
     @OnMessage
-    public void onMessage(String message, @PathParam("username") String username) {
-        if (message.equalsIgnoreCase("_ready_")) {
-            broadcast("User " + username + " joined");
-        } else {
-            broadcast(">> " + username + ": " + message);
+    public void onMessage(Session session, String action, @PathParam("token") String token) {
+        if ("cooldown".equals(action)) {
+            sendCooldown(token, session);
         }
     }
 
+    private void sendCooldown(String token, Session session) {
+        val cooldownOptional = cooldownController.getCooldownWith(token);
+        cooldownOptional.ifPresentOrElse(cooldown -> {
+            sendJson(cooldown.produceDTO(), session);
+            cooldown.subscribe(() -> sendJson(cooldown.produceDTO(), session));
+        }, () -> sendJson(errorDTO(), session));
+    }
+
     private void broadcast(String message) {
-        sessions.values().forEach(s -> {
-            s.getAsyncRemote().sendObject(message, result ->  {
-                if (result.getException() != null) {
-                    System.out.println("Unable to send message: " + result.getException());
-                }
-            });
-        });
+        sessions.values().forEach(s -> s.getAsyncRemote().sendObject(message));
     }
 
-    public void init() {
-        //        final Cooldown cooldown = cooldownController.getCooldownObjectOrCreateWith(token);
-//        cooldown.subscribe(() -> session.getAsyncRemote().sendObject(cooldown.produceDTO()));
-//        session.getAsyncRemote().sendObject(cooldown.produceDTO());
-//
-//        sessions.put(session.getId(), new CooldownSession(session, cooldown));
-
+    private void sendJson(Object message, Session session) {
+        try {
+            session.getAsyncRemote().sendObject(jsonUtil.stringify(message));
+        } catch (JsonProcessingException e) {
+            session.getAsyncRemote().sendObject("error");
+        }
     }
 
-
-
+    static CooldownDTO errorDTO() {
+        return new CooldownDTO(
+                0,
+                0,
+                false,
+                true
+        );
+    }
 }

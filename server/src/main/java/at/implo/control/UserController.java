@@ -2,6 +2,7 @@ package at.implo.control;
 
 import at.implo.dao.UserDao;
 import at.implo.dto.UserResponseDTO;
+import at.implo.entity.Cooldown;
 import at.implo.entity.User;
 import lombok.val;
 
