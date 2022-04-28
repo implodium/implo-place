@@ -6,8 +6,10 @@ export const environment = {
   production: false,
   server: {
     port: 8080,
-    url: 'http://localhost',
-    path: 'api'
+    url: 'localhost',
+    path: '',
+    httpProtocol: 'http',
+    websocketProtocol: 'ws'
   }
 };
 

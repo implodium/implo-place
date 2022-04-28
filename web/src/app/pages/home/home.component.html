@@ -1,7 +1,8 @@
 <div class="home-page">
   <h1 *ngIf="user">{{ greeting }} {{user.displayName}}#{{user.discriminator}}</h1>
-  <h2>Cooldown: {{cooldown}}</h2>
-  <button mat-button color="primary" (click)="draw()">Draw Pixel</button>
+  <h2 *ngIf="cooldown && cooldown.active">Cooldown: {{cooldown.minutes}} : {{cooldown.seconds}}</h2>
+  <h2 *ngIf="cooldown && !cooldown.active">ready</h2>
+  <button mat-button color="primary" [disabled]="!cooldown || cooldown && cooldown.active" (click)="draw()">Draw Pixel</button>
 </div>
 
 
