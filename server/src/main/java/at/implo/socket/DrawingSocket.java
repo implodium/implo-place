@@ -1,8 +1,10 @@
 package at.implo.socket;
 
+import at.implo.control.BoardController;
 import at.implo.control.CooldownController;
 import at.implo.control.UserController;
 import at.implo.dao.UserDao;
+import at.implo.entity.Board;
 import at.implo.entity.Cell;
 import at.implo.dto.DrawRequest;
 import at.implo.dto.DrawResponse;
@@ -17,6 +19,7 @@ import lombok.val;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
+import javax.transaction.Transactional;
 import javax.websocket.OnMessage;
 import javax.websocket.OnOpen;
 import javax.websocket.Session;
@@ -39,6 +42,9 @@ public class DrawingSocket {
     @Inject
     UserController userController;
 
+    @Inject
+    BoardController boardController;
+
     @OnOpen
     void openSocket(Session session) {
         this.sessions.put(session.getId(), session);
@@ -46,7 +52,7 @@ public class DrawingSocket {
     }
 
     @OnMessage
-    void messageTo(Session session, String request, @PathParam("token") String token) throws JsonProcessingException {
+    void messageTo(Session session, String request, @PathParam("token") String token) {
         val drawRequest = tryParseRequest(request).orElseThrow();
         val cooldownOptional = cooldownController.getCooldownWith(token);
         val user = userController.register(token);
@@ -60,7 +66,9 @@ public class DrawingSocket {
                         drawRequest.color()
                 );
 
+                boardController.saveCell(updatedCell);
                 broadcast(new DrawResponse(true, updatedCell));
+                cooldownController.setCooldown(token);
             } else {
                 sendTo(session, new DrawResponse(false, null));
             }

@@ -4,14 +4,14 @@ import lombok.*;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Transient;
 
-@RequiredArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 public @Data @Entity class Board {
 
-    @Id @Getter
-    @NonNull Long id;
+    @Id @Getter Long id;
 
-    @Getter int placedPixels = 0;
+    @Getter int placedPixels;
 
 }
