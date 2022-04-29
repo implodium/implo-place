@@ -1,5 +1,6 @@
 package at.implo.control;
 
+import at.implo.config.CooldownConfig;
 import at.implo.dao.CooldownDao;
 import at.implo.dao.UserDao;
 import at.implo.entity.Cooldown;
@@ -20,16 +21,13 @@ import java.util.Optional;
 @ApplicationScoped
 public class CooldownController {
 
-
-    private final int defaultMinutes = 0;
-    private final int defaultSeconds = 30;
-
     @Getter
     private List<Cooldown> cooldowns = new ArrayList<>();
 
     @Inject CooldownDao dao;
 
-    @Inject UserDao userDao;
+    @Inject
+    CooldownConfig cooldownConfig;
 
     @Inject
     DiscordController discordController;
@@ -40,7 +38,7 @@ public class CooldownController {
 
     public void setCooldown(String token) {
         val cooldown = getCooldownWith(token).orElseThrow();
-        cooldown.activate(defaultMinutes, defaultSeconds);
+        cooldown.activate(cooldownConfig.minutes(), cooldownConfig.seconds());
     }
 
     @Scheduled(every = "10s")
