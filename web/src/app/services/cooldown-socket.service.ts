@@ -3,7 +3,7 @@ import {webSocket, WebSocketSubject} from "rxjs/webSocket";
 import {ServerEnvironmentService} from "./server-environment.service";
 import {HttpClient} from "@angular/common/http";
 import {AuthService} from "./auth.service";
-import {Cooldown} from "../typings/cooldown";
+import Cooldown from "../typings/cooldown";
 import Store from "../store/Store";
 import BaseSocketService from "./base-socket.service";
 

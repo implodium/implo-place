@@ -5,8 +5,8 @@ import {UserResponseDto} from "../../typings/user-response-dto";
 import {UserService} from "../../services/user.service";
 import {GreetingService} from "../../services/greeting.service";
 import {CooldownSocketService} from "../../services/cooldown-socket.service";
-import {Cooldown} from "../../typings/cooldown";
 import {CooldownService} from "../../services/cooldown.service";
+import Cooldown from "../../typings/cooldown";
 
 @Component({
   selector: 'app-home',
@@ -17,6 +17,8 @@ export class HomeComponent implements OnInit {
 
   user?: UserResponseDto
   cooldown?: Cooldown
+  seconds: number = 0
+  minutes: number = 0
 
   constructor(
     private readonly token: AuthService,
@@ -37,8 +39,27 @@ export class HomeComponent implements OnInit {
 
     this.cooldownSocket.loadSocket();
     this.cooldownSocket.store.get().subscribe(cooldown => {
-      this.cooldown = cooldown
+      if (cooldown) {
+        this.cooldown = cooldown
+        this.seconds = cooldown.seconds
+        this.minutes = cooldown.minutes
+      }
     })
+
+    this.setInterval()
+  }
+
+  private setInterval() {
+    setInterval(() => {
+      if (this.cooldown && this.cooldown.active) {
+        if (this.seconds == 0) {
+          this.minutes--
+          this.seconds = 60
+        } else {
+          this.seconds--
+        }
+      }
+    }, 1000)
   }
 
   private async redirectToLogin() {
