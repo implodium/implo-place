@@ -1,0 +1,31 @@
+.board {
+  display: flex;
+  border: 2px solid black;
+}
+
+.cell {
+  position: relative;
+  width: 50px;
+  height: 50px;
+  font-size: 10px;
+  cursor: pointer;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.cell::after {
+  display: none;
+  content: '';
+  z-index: 1;
+  position: absolute;
+  top: 0; left: 0;
+  width: 48px;
+  height: 48px;
+  border: 1px solid black;
+}
+
+.cell:hover::after {
+  display: block;
+}

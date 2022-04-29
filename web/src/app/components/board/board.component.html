@@ -1,0 +1,10 @@
+<div class="board">
+  <div *ngFor="let column of grid" class="column">
+    <div
+      *ngFor="let cell of column"
+      class="cell"
+      (click)="draw(cell)"
+      [style.background]="cell.color"
+    ></div>
+  </div>
+</div>

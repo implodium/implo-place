@@ -17,6 +17,8 @@ import {MatMenuModule} from "@angular/material/menu";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatInputModule} from "@angular/material/input";
 import {FormsModule} from "@angular/forms";
+import { BoardComponent } from './components/board/board.component';
+import { ColorPalletteComponent } from './components/color-pallette/color-pallette.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +28,9 @@ import {FormsModule} from "@angular/forms";
     PageComponent,
     AuthComponent,
     DialogComponent,
-    DialogActionBarComponent
+    DialogActionBarComponent,
+    BoardComponent,
+    ColorPalletteComponent
   ],
     imports: [
         BrowserModule,

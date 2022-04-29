@@ -3,6 +3,9 @@
   <h2 *ngIf="cooldown && cooldown.active">Cooldown: {{minutes}} : {{seconds}}</h2>
   <h2 *ngIf="cooldown && !cooldown.active">ready</h2>
   <button mat-button color="primary" [disabled]="!cooldown || cooldown && cooldown.active" (click)="draw()">Draw Pixel</button>
+
+  <app-board [width]="10" [height]="10" drawing-color="black"></app-board>
+  <app-color-pallette></app-color-pallette>
 </div>
 
 
