@@ -19,6 +19,7 @@ import {MatInputModule} from "@angular/material/input";
 import {FormsModule} from "@angular/forms";
 import { BoardComponent } from './components/board/board.component';
 import { ColorPalletteComponent } from './components/color-pallette/color-pallette.component';
+import {MatTooltipModule} from "@angular/material/tooltip";
 
 @NgModule({
   declarations: [
@@ -44,6 +45,7 @@ import { ColorPalletteComponent } from './components/color-pallette/color-pallet
         MatFormFieldModule,
         MatInputModule,
         FormsModule,
+        MatTooltipModule,
     ],
   providers: [],
   bootstrap: [AppComponent]

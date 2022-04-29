@@ -29,6 +29,8 @@ export class BoardComponent implements OnInit {
 
   grid: Cell[][] = []
 
+  selectedCell?: Cell
+
   constructor(private readonly cooldownSocket: CooldownSocketService) { }
 
   ngOnInit(): void {
@@ -40,7 +42,7 @@ export class BoardComponent implements OnInit {
       this.grid[i] = []
       for (let j = 0; j < this.height; j++) {
         this.grid[i][j] = {
-          id: {x: i, y: i, board: { id: 0}},
+          id: {x: i, y: j, board: { id: 0}},
           color: 'white',
         }
       }
@@ -58,8 +60,13 @@ export class BoardComponent implements OnInit {
     const updatedCell = response.updatedCell
 
     if (updatedCell) {
-      const cell = this.grid[updatedCell.id.x][updatedCell.id.y]
-      cell.color = updatedCell.color
+      this.grid[updatedCell.id.x][updatedCell.id.y] = updatedCell
+    }
+  }
+
+  setSelected(cell: Cell) {
+    if (cell && cell.user) {
+      this.selectedCell = cell
     }
   }
 }

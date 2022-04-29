@@ -56,7 +56,8 @@ export class HomeComponent implements OnInit {
     this.setInterval()
 
     this.drawingSocket.loadSocket()
-    this.drawingSocket.subscribe(response => {
+    this.drawingSocket.
+    subscribe(response => {
       console.log(response)
       this.board.visualizeDraw(response)
     })

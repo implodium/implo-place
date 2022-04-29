@@ -1,10 +1,17 @@
-<div class="board">
-  <div *ngFor="let column of grid" class="column">
-    <div
-      *ngFor="let cell of column"
-      class="cell"
-      (click)="requestDraw(cell)"
-      [style.background]="cell.color"
-    ></div>
+
+<div class="board-container">
+
+  <h1>{{selectedCell && selectedCell.user ? selectedCell.user.displayName + '#' + selectedCell.user.discriminator : 'none'}}</h1>
+
+  <div class="board">
+    <div *ngFor="let column of grid" class="column">
+      <div
+        *ngFor="let cell of column"
+        class="cell"
+        (click)="requestDraw(cell)"
+        [style.background]="cell.color"
+        (mouseover)="setSelected(cell)"
+      ></div>
+    </div>
   </div>
 </div>
