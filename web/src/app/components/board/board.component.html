@@ -3,7 +3,7 @@
     <div
       *ngFor="let cell of column"
       class="cell"
-      (click)="draw(cell)"
+      (click)="requestDraw(cell)"
       [style.background]="cell.color"
     ></div>
   </div>

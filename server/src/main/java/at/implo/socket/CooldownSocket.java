@@ -50,7 +50,11 @@ public class CooldownSocket {
     }
 
     private void broadcast(String message) {
-        sessions.values().forEach(s -> s.getAsyncRemote().sendObject(message));
+        sessions.values().forEach(s -> s.getAsyncRemote().sendObject(message, sendResult -> {
+            if (sendResult.getException() != null) {
+                sendResult.getException().printStackTrace();
+            }
+        }));
     }
 
     private void sendJson(Object message, Session session) {

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 
 @Component({
   selector: 'app-color-pallette',
@@ -6,6 +6,9 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./color-pallette.component.scss']
 })
 export class ColorPalletteComponent implements OnInit {
+
+  @Output('color-change')
+  colorChange: EventEmitter<string> = new EventEmitter<string>()
 
   colors: string[] = [
     "white",
@@ -15,9 +18,18 @@ export class ColorPalletteComponent implements OnInit {
     "blue"
   ]
 
+  selected: string = this.colors[0]
+
+  @Input('disabled')
+  disabled: boolean = false
+
   constructor() { }
 
   ngOnInit(): void {
   }
 
+  changeSelected(color: string) {
+    this.selected = color
+    this.colorChange.emit(color)
+  }
 }

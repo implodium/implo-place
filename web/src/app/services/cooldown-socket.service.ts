@@ -6,6 +6,7 @@ import {AuthService} from "./auth.service";
 import Cooldown from "../typings/cooldown";
 import Store from "../store/Store";
 import BaseSocketService from "./base-socket.service";
+import {Observable} from "rxjs";
 
 @Injectable({
   providedIn: 'root'
@@ -40,5 +41,11 @@ export class CooldownSocketService extends BaseSocketService {
       }
     })
   }
+
+  update(): Observable<Cooldown | undefined> {
+    this.socket!.next('cooldown')
+    return this.store.get()
+  }
+
 
 }

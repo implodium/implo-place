@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {Router} from "@angular/router";
 import {AuthService} from "../../services/auth.service";
 import {UserResponseDto} from "../../typings/user-response-dto";
@@ -7,6 +7,9 @@ import {GreetingService} from "../../services/greeting.service";
 import {CooldownSocketService} from "../../services/cooldown-socket.service";
 import {CooldownService} from "../../services/cooldown.service";
 import Cooldown from "../../typings/cooldown";
+import {DrawRequest} from "../../typings/draw-request";
+import {DrawingSocketService} from "../../services/drawing-socket.service";
+import {BoardComponent} from "../../components/board/board.component";
 
 @Component({
   selector: 'app-home',
@@ -15,10 +18,14 @@ import Cooldown from "../../typings/cooldown";
 })
 export class HomeComponent implements OnInit {
 
+  @ViewChild('board')
+  board!: BoardComponent
+
   user?: UserResponseDto
   cooldown?: Cooldown
   seconds: number = 0
   minutes: number = 0
+  drawingColor: string = 'white'
 
   constructor(
     private readonly token: AuthService,
@@ -26,8 +33,8 @@ export class HomeComponent implements OnInit {
     private readonly userService: UserService,
     private readonly greetingService: GreetingService,
     private readonly cooldownSocket: CooldownSocketService,
-    private readonly cooldownService: CooldownService
-  ) { }
+    private readonly drawingSocket: DrawingSocketService
+    ) { }
 
   async ngOnInit(): Promise<void> {
     if (!this.token.isAvailable) {
@@ -47,6 +54,12 @@ export class HomeComponent implements OnInit {
     })
 
     this.setInterval()
+
+    this.drawingSocket.loadSocket()
+    this.drawingSocket.subscribe(response => {
+      console.log(response)
+      this.board.visualizeDraw(response)
+    })
   }
 
   private setInterval() {
@@ -70,7 +83,11 @@ export class HomeComponent implements OnInit {
     return this.greetingService.greeting
   }
 
-  draw() {
-    this.cooldownService.setCooldown()
+  draw($event: DrawRequest) {
+    this.drawingSocket.requestDraw($event)
+  }
+
+  changeDrawingColor($event: string) {
+    this.drawingColor = $event
   }
 }

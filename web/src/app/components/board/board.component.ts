@@ -1,5 +1,8 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Cell} from "../../typings/cell";
+import {CooldownSocketService} from "../../services/cooldown-socket.service";
+import {DrawRequest} from "../../typings/draw-request";
+import {DrawResponse} from "../../typings/draw-response";
 
 @Component({
   selector: 'app-board',
@@ -17,9 +20,16 @@ export class BoardComponent implements OnInit {
   @Input("drawing-color")
   color!: string
 
+  @Input("can-draw")
+  canDraw: boolean = true
+
+
+  @Output("draw")
+  draw: EventEmitter<DrawRequest> = new EventEmitter<DrawRequest>()
+
   grid: Cell[][] = []
 
-  constructor() { }
+  constructor(private readonly cooldownSocket: CooldownSocketService) { }
 
   ngOnInit(): void {
     this.constructGrid();
@@ -32,13 +42,25 @@ export class BoardComponent implements OnInit {
         this.grid[i][j] = {
           x: i,
           y: j,
-          color: '#FFFFFF'
+          color: 'white'
         }
       }
     }
   }
 
-  draw(cell: Cell) {
-    cell.color = this.color
+  requestDraw(cell: Cell) {
+      this.draw.emit({
+        color: this.color,
+        cell
+      })
+  }
+
+  visualizeDraw(response: DrawResponse) {
+    const updatedCell = response.updatedCell
+
+    if (updatedCell) {
+      const cell = this.grid[updatedCell.x][updatedCell.y]
+      cell.color = updatedCell.color
+    }
   }
 }
