@@ -40,26 +40,25 @@ export class BoardComponent implements OnInit {
       this.grid[i] = []
       for (let j = 0; j < this.height; j++) {
         this.grid[i][j] = {
-          x: i,
-          y: j,
-          color: 'white'
+          id: {x: i, y: i, board: { id: 0}},
+          color: 'white',
         }
       }
     }
   }
 
   requestDraw(cell: Cell) {
-      this.draw.emit({
-        color: this.color,
-        cell
-      })
+    this.draw.emit({
+      color: this.color,
+      cell
+    })
   }
 
   visualizeDraw(response: DrawResponse) {
     const updatedCell = response.updatedCell
 
     if (updatedCell) {
-      const cell = this.grid[updatedCell.x][updatedCell.y]
+      const cell = this.grid[updatedCell.id.x][updatedCell.id.y]
       cell.color = updatedCell.color
     }
   }

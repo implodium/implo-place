@@ -16,6 +16,9 @@ public class UserController {
     @Inject
     UserDao userDao;
 
+    @Inject
+    DiscordController discordController;
+
     @Transactional
     public User register(UserResponseDTO responseDTO) {
         try {
@@ -23,6 +26,12 @@ public class UserController {
         } catch (NullPointerException exception) {
             return createNewUser(responseDTO);
         }
+    }
+
+    @Transactional
+    public User register(String token) {
+        val discordResponse = discordController.getUserByToken(token);
+        return register(discordResponse);
     }
 
     private User updateUser(UserResponseDTO responseDTO) {
