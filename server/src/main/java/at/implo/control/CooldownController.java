@@ -21,8 +21,8 @@ import java.util.Optional;
 public class CooldownController {
 
 
-    private final int defaultMinutes = 5;
-    private final int defaultSeconds = 5;
+    private final int defaultMinutes = 0;
+    private final int defaultSeconds = 30;
 
     @Getter
     private List<Cooldown> cooldowns = new ArrayList<>();
