@@ -23,8 +23,8 @@ import java.util.concurrent.ConcurrentHashMap;
 @ApplicationScoped
 public class DrawingSocket {
 
-    private Map<String, Session> sessions = new ConcurrentHashMap<>();
-    private ObjectMapper objectMapper = new ObjectMapper();
+    private final Map<String, Session> sessions = new ConcurrentHashMap<>();
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Inject
     CooldownController cooldownController;
