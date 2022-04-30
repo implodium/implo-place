@@ -1,4 +1,4 @@
-FROM maven:3.8.4-openjdk-11-slim as build
+FROM maven:3.8.4-openjdk-17-slim as build
 
 RUN curl --location --output graalvm.tgz https://github.com/graalvm/graalvm-ce-builds/releases/download/vm-21.3.0/graalvm-ce-java11-linux-amd64-21.3.0.tar.gz \
     && tar -xzf graalvm.tgz \
