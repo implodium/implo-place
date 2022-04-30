@@ -2,7 +2,7 @@ version: '3.7'
 
 services:
   web:
-    image: ghcr.io/implodium/implo-places/web
+    image: ghcr.io/implodium/implo-place/web
     build: web
     depends_on: [server]
     container_name: implo-places-web
@@ -10,6 +10,6 @@ services:
       - "80:80"
 
   server:
-    image: ghcr.io/implodium/implo-places/server
+    image: ghcr.io/implodium/implo-place/server
     build: server
     container_name: implo-places-server
