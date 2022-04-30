@@ -5,9 +5,7 @@
 export const environment = {
   production: false,
   server: {
-    port: 8080,
-    url: 'localhost',
-    path: '',
+    host: 'localhost:8080',
     httpProtocol: 'http',
     websocketProtocol: 'ws'
   }

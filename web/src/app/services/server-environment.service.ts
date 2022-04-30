@@ -6,20 +6,14 @@ import {environment} from "../../environments/environment";
 })
 export class ServerEnvironmentService {
 
-  url: string = environment.server.url
-  port: number = environment.server.port
-  path: string = environment.server.path
+  host: string = environment.server.host
   websocketProtocol: string = environment.server.websocketProtocol
   restProtocol: string = environment.server.httpProtocol
 
   constructor() { }
 
   get baseUrl() {
-    if (this.path.trim() !== '') {
-      return `${this.url}:${this.port}/${this.path}/`
-    } else {
-      return `${this.url}:${this.port}`
-    }
+    return this.host
   }
 
 }
