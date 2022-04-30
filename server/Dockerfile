@@ -1,6 +1,6 @@
 FROM maven:3.8.4-openjdk-17-slim as build
 
-RUN curl --location --output graalvm.tgz https://github.com/graalvm/graalvm-ce-builds/releases/download/vm-21.3.0/graalvm-ce-java11-linux-amd64-21.3.0.tar.gz \
+RUN curl --location --output graalvm.tgz https://github.com/graalvm/graalvm-ce-dev-builds/releases/download/22.2.0-dev-20220428_2136/graalvm-ce-java17-linux-amd64-dev.tar.gz \
     && tar -xzf graalvm.tgz \
     && mv graalvm-* /opt/graalvm \
     && /opt/graalvm/bin/gu install native-image \
