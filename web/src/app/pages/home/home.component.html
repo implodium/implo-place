@@ -4,7 +4,7 @@
   <h2 *ngIf="cooldown && !cooldown.active">ready</h2>
 
   <div *ngIf="cooldown" class="content">
-    <app-board #board [width]="80" [height]="80" [drawing-color]="drawingColor" (draw)="draw($event)" [can-draw]="!cooldown.active"></app-board>
+    <app-board #board [width]="80" [height]="80" [drawing-color]="drawingColor" (draw)="draw($event)" [can-draw]="!cooldown.active" [definedCells]="loadedCells"></app-board>
     <app-color-pallette (color-change)="changeDrawingColor($event)" [disabled]="cooldown.active"></app-color-pallette>
   </div>
 </div>

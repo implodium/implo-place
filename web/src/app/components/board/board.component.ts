@@ -23,7 +23,6 @@ export class BoardComponent implements OnInit {
   @Input("can-draw")
   canDraw: boolean = true
 
-
   @Output("draw")
   draw: EventEmitter<DrawRequest> = new EventEmitter<DrawRequest>()
 
@@ -31,10 +30,14 @@ export class BoardComponent implements OnInit {
 
   selectedCell?: Cell
 
+  @Input('definedCells')
+  definedCells: Cell[] = []
+
   constructor(private readonly cooldownSocket: CooldownSocketService) { }
 
   ngOnInit(): void {
     this.constructGrid();
+    this.fillInDefinedCells()
   }
 
   private constructGrid() {
@@ -68,5 +71,11 @@ export class BoardComponent implements OnInit {
     if (cell && cell.user) {
       this.selectedCell = cell
     }
+  }
+
+  private fillInDefinedCells() {
+    this.definedCells.forEach(cell => {
+      this.grid[cell.id.x][cell.id.y] = cell
+    })
   }
 }

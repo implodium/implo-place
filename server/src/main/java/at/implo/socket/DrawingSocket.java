@@ -98,6 +98,11 @@ public class DrawingSocket {
     }
 
     void sendTo(Session session, Object message) {
-        session.getAsyncRemote().sendObject(message);
+        try {
+            val jsonString = objectMapper.writeValueAsString(message);
+            session.getAsyncRemote().sendObject(jsonString);
+        } catch (JsonProcessingException exception) {
+            exception.printStackTrace();
+        }
     }
 }

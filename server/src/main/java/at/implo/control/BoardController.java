@@ -12,6 +12,7 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.event.Observes;
 import javax.inject.Inject;
 import javax.transaction.Transactional;
+import java.util.List;
 
 @ApplicationScoped
 public class BoardController {
@@ -43,4 +44,7 @@ public class BoardController {
         return boardOptional.orElse(boardDao.save(new Board(boardConfig.boardId(),0)));
     }
 
+    public List<Cell> findAllCells() {
+        return this.cellDao.listAll();
+    }
 }

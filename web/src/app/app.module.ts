@@ -20,6 +20,7 @@ import {FormsModule} from "@angular/forms";
 import { BoardComponent } from './components/board/board.component';
 import { ColorPalletteComponent } from './components/color-pallette/color-pallette.component';
 import {MatTooltipModule} from "@angular/material/tooltip";
+import {MatSnackBarModule} from "@angular/material/snack-bar";
 
 @NgModule({
   declarations: [
@@ -46,6 +47,7 @@ import {MatTooltipModule} from "@angular/material/tooltip";
         MatInputModule,
         FormsModule,
         MatTooltipModule,
+        MatSnackBarModule
     ],
   providers: [],
   bootstrap: [AppComponent]
