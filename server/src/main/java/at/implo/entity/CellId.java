@@ -1,6 +1,7 @@
 package at.implo.entity;
 
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -11,7 +12,7 @@ import java.io.Serializable;
 
 @AllArgsConstructor
 @NoArgsConstructor
-public @Embeddable class CellId implements Serializable {
+public @Embeddable @Data class CellId implements Serializable {
 
     @Getter
     int x;
