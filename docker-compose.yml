@@ -12,4 +12,18 @@ services:
   server:
     image: ghcr.io/implodium/implo-place/server
     build: server
+    restart: always
     container_name: implo-places-server
+    ports:
+      - "8080:8080"
+
+  database:
+    image: postgres
+    container_name: implo-place-database
+    privileged: true
+    environment:
+      POSTGRES_PASSWORD: app
+      POSTGRES_USER: app
+      POSTGRES_DB: db
+    volumes:
+      - ./data/:/var/lib/postgresql/data
