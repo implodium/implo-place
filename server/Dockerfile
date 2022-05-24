@@ -1,30 +1,17 @@
-FROM maven:3.8.4-openjdk-17-slim as build
+FROM maven:3.8.5-openjdk-17 as build
 
-RUN curl --location --output graalvm.tgz https://github.com/graalvm/graalvm-ce-dev-builds/releases/download/22.2.0-dev-20220428_2136/graalvm-ce-java17-linux-amd64-dev.tar.gz \
-    && tar -xzf graalvm.tgz \
-    && mv graalvm-* /opt/graalvm \
-    && /opt/graalvm/bin/gu install native-image \
-    && apt update \
-    && apt install build-essential libz-dev zlib1g-dev -y \
-    && rm -r /var/lib/apt/lists
+WORKDIR /app/
 
+COPY pom.xml ./
 
-WORKDIR /app
-
-COPY pom.xml .
-
-RUN mvn install
+RUN mvn clean install
 
 COPY . .
 
-RUN export GRAALVM_HOME=/opt/graalvm && mvn verify -Pnative -DskipTests
+RUN mvn -Dquarkus.package.type=uber-jar -DskipTests verify
 
-FROM ubuntu:impish-20211102 as run
+FROM openjdk:17-slim
 
-WORKDIR /app
+COPY --from=build /app/target/*-runner.jar application.jar
 
-COPY --from=build /app/target/*-runner /app/application
-
-EXPOSE 8080
-
-ENTRYPOINT ["./application"]
+ENTRYPOINT ["java", "-jar", "application.jar"]
