@@ -21,6 +21,7 @@ import { BoardComponent } from './components/board/board.component';
 import { ColorPalletteComponent } from './components/color-pallette/color-pallette.component';
 import {MatTooltipModule} from "@angular/material/tooltip";
 import {MatSnackBarModule} from "@angular/material/snack-bar";
+import { UserDisplayCardComponent } from './components/user-display-card/user-display-card.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import {MatSnackBarModule} from "@angular/material/snack-bar";
     DialogComponent,
     DialogActionBarComponent,
     BoardComponent,
-    ColorPalletteComponent
+    ColorPalletteComponent,
+    UserDisplayCardComponent
   ],
     imports: [
         BrowserModule,

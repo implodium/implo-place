@@ -5,7 +5,6 @@ import {UserResponseDto} from "../../typings/user-response-dto";
 import {UserService} from "../../services/user.service";
 import {GreetingService} from "../../services/greeting.service";
 import {CooldownSocketService} from "../../services/cooldown-socket.service";
-import {CooldownService} from "../../services/cooldown.service";
 import Cooldown from "../../typings/cooldown";
 import {DrawRequest} from "../../typings/draw-request";
 import {DrawingSocketService} from "../../services/drawing-socket.service";
@@ -13,6 +12,8 @@ import {BoardComponent} from "../../components/board/board.component";
 import {BoardService} from "../../services/board.service";
 import {Cell} from "../../typings/cell";
 import {MatSnackBar} from "@angular/material/snack-bar";
+import {ConnectedUser} from "../../typings/connected-user";
+import {ConnectedUserSocketService} from "../../services/connected-user-socket.service";
 
 @Component({
   selector: 'app-home',
@@ -30,6 +31,9 @@ export class HomeComponent implements OnInit {
   minutes: number = 0
   drawingColor: string = 'white'
   loadedCells: Cell[] = []
+  connectedUser: ConnectedUser[] = [
+    {username: "smth", discriminator: "idjadf", id: "asidfjadsjfiojasdiofj"}
+  ]
 
   constructor(
     private readonly token: AuthService,
@@ -39,6 +43,7 @@ export class HomeComponent implements OnInit {
     private readonly cooldownSocket: CooldownSocketService,
     private readonly drawingSocket: DrawingSocketService,
     private readonly boardService: BoardService,
+    private readonly connectedUserSocket: ConnectedUserSocketService,
     private _snackBar: MatSnackBar
     ) { }
 
@@ -49,6 +54,7 @@ export class HomeComponent implements OnInit {
     this.setInterval()
     this.subscribeToDrawingSocket()
     this.loadCells()
+    this.connectUser()
   }
 
   private setInterval() {
@@ -95,6 +101,7 @@ export class HomeComponent implements OnInit {
 
   private registerUser() {
     this.userService.register()
+    this.userService.user.get()
       .subscribe(user => this.user = user)
   }
 
@@ -126,5 +133,23 @@ export class HomeComponent implements OnInit {
       .subscribe(cells => {
         this.loadedCells = cells
       })
+  }
+
+  private connectUser() {
+    this.connectedUserSocket.connect()
+    this.connectedUserSocket.store.get().subscribe(connectedUser => {
+      console.log(connectedUser)
+      this.connectedUser = connectedUser
+    })
+
+    this.userService.user.get().subscribe(user => {
+      if (user) {
+        this.connectedUserSocket.connectUser({
+          id: user.id,
+          discriminator: user.discriminator,
+          username: user.displayName,
+        })
+      }
+    })
   }
 }

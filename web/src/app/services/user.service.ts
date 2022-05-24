@@ -14,7 +14,7 @@ import {ChangeNameRequest} from "../typings/change-name-request";
 })
 export class UserService extends BaseRestService {
 
-  private readonly user = new Store<User | undefined>(undefined)
+  public readonly user = new Store<User | undefined>(undefined)
 
   constructor(
     http: HttpClient,
@@ -24,14 +24,12 @@ export class UserService extends BaseRestService {
     super(http, environment, 'user')
   }
 
-  register(): Observable<User | undefined> {
+  register() {
     const response = this.requestRegister()
 
     response.subscribe(user => {
       this.user.set(user)
     })
-
-    return this.user.get()
   }
 
   private requestRegister() {
