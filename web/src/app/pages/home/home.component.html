@@ -5,8 +5,8 @@
 
   <div *ngIf="cooldown" class="content">
     <div class="col">
-      <app-board #board [width]="80" [height]="80" [drawing-color]="drawingColor" (cell-select)="cellSelect($event)" [cell-select]="colorIsSelected" [can-draw]="!cooldown.active" [definedCells]="loadedCells" [fastmode]="fastmode" (draw-color)="fastdraw($event)"></app-board>
-      <app-color-pallette [enabled]="colorIsSelected" (draw)="draw($event)" [fastmode]="fastmode" (change-color)="colorSelect($event)" [can-draw]="!cooldown.active"></app-color-pallette>
+      <app-board #board [width]="80" [height]="80" [drawing-color]="drawingColor" (cell-select)="cellSelect($event)" [cell-select]="colorIsSelected" [can-draw]="canDraw" [definedCells]="loadedCells" [fastmode]="fastmode" (draw-color)="fastdraw($event)"></app-board>
+      <app-color-pallette [enabled]="colorIsSelected" (draw)="draw($event)" [fastmode]="fastmode" (change-color)="colorSelect($event)" [can-draw]="canDraw"></app-color-pallette>
     </div>
     <div class="col">
       <app-user-display-card *ngFor="let connectedUser of connectedUser" [user]="connectedUser"></app-user-display-card>

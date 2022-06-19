@@ -82,7 +82,15 @@ export class HomeComponent implements OnInit {
   }
 
   cellSelect($event: Cell) {
-    this.selectedCell = $event
+    if (this.canDraw) {
+      this.selectedCell = $event
+    } else {
+      this.openCooldownAlert()
+    }
+  }
+
+  get canDraw() {
+    return this.cooldown !== undefined && !this.cooldown.active
   }
 
   draw(color: string) {
