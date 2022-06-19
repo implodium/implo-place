@@ -57,6 +57,7 @@ export class HomeComponent implements OnInit {
     this.subscribeToDrawingSocket()
     this.loadCells()
     this.connectUser()
+    this.unselectKeybinding()
   }
 
   private setInterval() {
@@ -208,4 +209,11 @@ export class HomeComponent implements OnInit {
     this.selectedColor = color
   }
 
+  private unselectKeybinding() {
+    document.addEventListener('keydown', keyevent => {
+      if (keyevent.code === 'Escape') {
+        this.selectedCell = undefined
+      }
+    })
+  }
 }

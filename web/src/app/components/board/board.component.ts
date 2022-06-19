@@ -30,6 +30,9 @@ export class BoardComponent implements OnInit {
   @Input('definedCells')
   definedCells: Cell[] = []
 
+  @Input('cell-select')
+  cellIsSelected: boolean = false
+
   @Output("cell-select")
   cellSelectEvent: EventEmitter<Cell> = new EventEmitter<Cell>()
 
@@ -97,6 +100,7 @@ export class BoardComponent implements OnInit {
 
   isSelected(cell: Cell) {
     return !this.fastmode
+      && this.cellIsSelected
       && this.canDraw
       && this.selectedCell
       && this.selectedCell.id.x === cell.id.x
