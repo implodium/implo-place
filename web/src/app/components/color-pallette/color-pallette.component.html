@@ -1,4 +1,4 @@
-<div class="palette" [class.palette-enabled]="enabled">
+<div class="palette" [class.palette-enabled]="enabled" >
   <div
     class="color"
     *ngFor="let color of colors"
@@ -7,5 +7,5 @@
     (click)="changeSelected(color)"
   ></div>
 
-  <button class="draw-button" (click)="draw()">draw</button>
+  <button class="draw-button" (click)="draw()" [class.hidden]="fastmode">draw</button>
 </div>

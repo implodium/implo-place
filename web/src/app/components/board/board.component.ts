@@ -3,6 +3,7 @@ import {Cell} from "../../typings/cell";
 import {CooldownSocketService} from "../../services/cooldown-socket.service";
 import {DrawRequest} from "../../typings/draw-request";
 import {DrawResponse} from "../../typings/draw-response";
+import {D} from "@angular/cdk/keycodes";
 
 @Component({
   selector: 'app-board',
@@ -23,8 +24,14 @@ export class BoardComponent implements OnInit {
   @Input("can-draw")
   canDraw: boolean = true
 
+  @Input("fastmode")
+  fastmode: boolean = false
+
   @Output("cell-select")
   cellSelectEvent: EventEmitter<Cell> = new EventEmitter<Cell>()
+
+  @Output("draw-color")
+  drawColorEvent: EventEmitter<Cell> = new EventEmitter<Cell>()
 
   grid: Cell[][] = []
 
@@ -52,8 +59,16 @@ export class BoardComponent implements OnInit {
     }
   }
 
-  colorSelect(cell: Cell) {
-    this.cellSelectEvent.emit(cell)
+  cellSelect(cell: Cell) {
+    if (this.fastmode) {
+      this.drawColor(cell)
+    } else {
+      this.cellSelectEvent.emit(cell)
+    }
+  }
+
+  drawColor(cell: Cell) {
+    this.drawColorEvent.emit(cell)
   }
 
   visualizeDraw(response: DrawResponse) {

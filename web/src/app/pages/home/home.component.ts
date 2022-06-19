@@ -25,12 +25,14 @@ export class HomeComponent implements OnInit {
   board!: BoardComponent
 
   user?: UserResponseDto
+  fastmode: boolean = false
   cooldown?: Cooldown
   seconds: number = 0
   minutes: number = 0
   drawingColor: string = 'white'
   loadedCells: Cell[] = []
   selectedCell?: Cell
+  selectedColor: string = "white"
   connectedUser: ConnectedUser[] = [
     {username: "smth", discriminator: "idjadf", id: "asidfjadsjfiojasdiofj"}
   ]
@@ -175,5 +177,14 @@ export class HomeComponent implements OnInit {
 
   get colorIsSelected(): boolean {
     return this.selectedCell !== undefined
+  }
+
+  fastdraw(cell: Cell) {
+    this.selectedCell = cell
+    this.draw(this.selectedColor)
+  }
+
+  colorSelect(color: string) {
+    this.selectedColor = color
   }
 }

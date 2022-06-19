@@ -8,7 +8,7 @@
       <div
         *ngFor="let cell of column"
         class="cell"
-        (click)="colorSelect(cell)"
+        (click)="cellSelect(cell)"
         [style.background]="cell.color"
         (mouseover)="setHovering(cell)"
       ></div>
