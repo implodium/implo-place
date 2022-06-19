@@ -6,7 +6,6 @@ import {UserService} from "../../services/user.service";
 import {GreetingService} from "../../services/greeting.service";
 import {CooldownSocketService} from "../../services/cooldown-socket.service";
 import Cooldown from "../../typings/cooldown";
-import {DrawRequest} from "../../typings/draw-request";
 import {DrawingSocketService} from "../../services/drawing-socket.service";
 import {BoardComponent} from "../../components/board/board.component";
 import {BoardService} from "../../services/board.service";
@@ -31,6 +30,7 @@ export class HomeComponent implements OnInit {
   minutes: number = 0
   drawingColor: string = 'white'
   loadedCells: Cell[] = []
+  selectedCell?: Cell
   connectedUser: ConnectedUser[] = [
     {username: "smth", discriminator: "idjadf", id: "asidfjadsjfiojasdiofj"}
   ]
@@ -78,8 +78,21 @@ export class HomeComponent implements OnInit {
     return this.greetingService.greeting
   }
 
-  draw($event: DrawRequest) {
-    this.drawingSocket.requestDraw($event)
+  cellSelect($event: Cell) {
+    this.selectedCell = $event
+  }
+
+  draw(color: string) {
+    if (this.selectedCell) {
+      this.drawingSocket.requestDraw({
+        color: color,
+        cell: this.selectedCell
+      })
+
+      this.selectedCell = undefined
+    } else {
+      this.openNoColorSelectedAlert()
+    }
   }
 
   changeDrawingColor($event: string) {
@@ -88,6 +101,13 @@ export class HomeComponent implements OnInit {
 
   private openCooldownAlert() {
     this._snackBar.open('you are on cooldown', 'dismiss', {
+      horizontalPosition: 'center',
+      verticalPosition: 'top',
+    })
+  }
+
+  private openNoColorSelectedAlert() {
+    this._snackBar.open('no color is selected cant draw pixel', 'dismiss', {
       horizontalPosition: 'center',
       verticalPosition: 'top',
     })
@@ -151,5 +171,9 @@ export class HomeComponent implements OnInit {
         })
       }
     })
+  }
+
+  get colorIsSelected(): boolean {
+    return this.selectedCell !== undefined
   }
 }

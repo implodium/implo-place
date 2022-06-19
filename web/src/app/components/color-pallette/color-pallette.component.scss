@@ -5,6 +5,14 @@
   gap: 2rem;
   justify-content: center;
   align-items: center;
+  box-shadow: 0 0 11px 0 #6B6B6B;
+  border-radius: 20px;
+  padding: 30px;
+  opacity: 0.5;
+}
+
+.palette-enabled {
+  opacity: 1;
 }
 
 .color {
@@ -37,4 +45,20 @@
   background-color: red;
   border-radius: 5px;
   transform: translateY(10px);
+}
+
+.draw-button {
+  background-color: #ffc64c;
+  border-radius: 10px;
+  padding: 20px;
+  border: none;
+  color: white;
+  text-transform: uppercase;
+  box-shadow: 0 0 11px 0 #6B6B6B;
+  cursor: pointer;
+  transition: 0.5s all;
+}
+
+.draw-button:hover {
+  transform: translateY(-10px);
 }

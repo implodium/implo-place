@@ -1,4 +1,5 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {DrawRequest} from "../../typings/draw-request";
 
 @Component({
   selector: 'app-color-pallette',
@@ -7,8 +8,8 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 })
 export class ColorPalletteComponent implements OnInit {
 
-  @Output('color-change')
-  colorChange: EventEmitter<string> = new EventEmitter<string>()
+  @Output('draw')
+  drawEvent: EventEmitter<string> = new EventEmitter<string>()
 
   colors: string[] = [
     "white",
@@ -20,8 +21,8 @@ export class ColorPalletteComponent implements OnInit {
 
   selected: string = this.colors[0]
 
-  @Input('disabled')
-  disabled: boolean = false
+  @Input('enabled')
+  enabled: boolean = false
 
   constructor() { }
 
@@ -30,6 +31,9 @@ export class ColorPalletteComponent implements OnInit {
 
   changeSelected(color: string) {
     this.selected = color
-    this.colorChange.emit(color)
+  }
+
+  draw() {
+    this.drawEvent.emit(this.selected)
   }
 }

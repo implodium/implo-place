@@ -1,4 +1,11 @@
-<div class="palette" [class.disabled]="disabled">
-  <div class="color" *ngFor="let color of colors"  [class.selected]="this.selected == color" [style.background-color]="color" (click)="changeSelected(color)">
-  </div>
+<div class="palette" [class.palette-enabled]="enabled">
+  <div
+    class="color"
+    *ngFor="let color of colors"
+    [class.selected]="this.selected == color"
+    [style.background-color]="color"
+    (click)="changeSelected(color)"
+  ></div>
+
+  <button class="draw-button" (click)="draw()">draw</button>
 </div>

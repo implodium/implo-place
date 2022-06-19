@@ -23,12 +23,12 @@ export class BoardComponent implements OnInit {
   @Input("can-draw")
   canDraw: boolean = true
 
-  @Output("draw")
-  draw: EventEmitter<DrawRequest> = new EventEmitter<DrawRequest>()
+  @Output("cell-select")
+  cellSelectEvent: EventEmitter<Cell> = new EventEmitter<Cell>()
 
   grid: Cell[][] = []
 
-  selectedCell?: Cell
+  hoveringCell?: Cell
 
   @Input('definedCells')
   definedCells: Cell[] = []
@@ -52,11 +52,8 @@ export class BoardComponent implements OnInit {
     }
   }
 
-  requestDraw(cell: Cell) {
-    this.draw.emit({
-      color: this.color,
-      cell
-    })
+  colorSelect(cell: Cell) {
+    this.cellSelectEvent.emit(cell)
   }
 
   visualizeDraw(response: DrawResponse) {
@@ -67,9 +64,9 @@ export class BoardComponent implements OnInit {
     }
   }
 
-  setSelected(cell: Cell) {
+  setHovering(cell: Cell) {
     if (cell && cell.user) {
-      this.selectedCell = cell
+      this.hoveringCell = cell
     }
   }
 
