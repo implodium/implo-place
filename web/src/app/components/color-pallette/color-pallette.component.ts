@@ -24,6 +24,9 @@ export class ColorPalletteComponent implements OnInit {
   @Input('fastmode')
   fastmode: boolean = false
 
+  @Input('can-draw')
+  canDraw: boolean = true
+
   @Output('draw')
   drawEvent: EventEmitter<string> = new EventEmitter<string>()
 
@@ -45,7 +48,6 @@ export class ColorPalletteComponent implements OnInit {
   }
 
   get enabled() {
-    console.log(this.fastmode)
-    return this.pixelIsSelected || this.fastmode
+    return this.pixelIsSelected && this.canDraw || this.fastmode
   }
 }

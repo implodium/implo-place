@@ -1,4 +1,5 @@
 .palette {
+  position: relative;
   width: 100%;
   display: flex;
   flex-wrap: wrap;
@@ -9,10 +10,24 @@
   border-radius: 20px;
   padding: 30px;
   opacity: 0.5;
+  isolation: isolate;
+}
+
+.palette::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
 }
 
 .palette-enabled {
   opacity: 1;
+}
+
+.palette-enabled::after {
+  display: none;
 }
 
 .color {

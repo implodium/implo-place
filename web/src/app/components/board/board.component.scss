@@ -1,3 +1,9 @@
+@keyframes selected {
+  from {transform: scale(1)}
+  50% {transform: scale(1.5)}
+  to {transform: scale(1)}
+}
+
 .board {
   display: flex;
   border: 2px solid black;
@@ -24,6 +30,14 @@
   width: 8px;
   height: 8px;
   border: 1px solid black;
+}
+
+.selected.cell::after {
+  display: block;
+  border: 1px solid red;
+  animation-name: selected;
+  animation-duration: 0.5s;
+  animation-iteration-count: infinite;
 }
 
 .cell:hover::after {

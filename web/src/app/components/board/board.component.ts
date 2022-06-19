@@ -27,6 +27,9 @@ export class BoardComponent implements OnInit {
   @Input("fastmode")
   fastmode: boolean = false
 
+  @Input('definedCells')
+  definedCells: Cell[] = []
+
   @Output("cell-select")
   cellSelectEvent: EventEmitter<Cell> = new EventEmitter<Cell>()
 
@@ -37,8 +40,7 @@ export class BoardComponent implements OnInit {
 
   hoveringCell?: Cell
 
-  @Input('definedCells')
-  definedCells: Cell[] = []
+  selectedCell?: Cell;
 
   constructor(private readonly cooldownSocket: CooldownSocketService) { }
 
@@ -60,6 +62,8 @@ export class BoardComponent implements OnInit {
   }
 
   cellSelect(cell: Cell) {
+    this.selectedCell = cell
+
     if (this.fastmode) {
       this.drawColor(cell)
     } else {
@@ -89,5 +93,13 @@ export class BoardComponent implements OnInit {
     this.definedCells.forEach(cell => {
       this.grid[cell.id.x][cell.id.y] = cell
     })
+  }
+
+  isSelected(cell: Cell) {
+    return !this.fastmode
+      && this.canDraw
+      && this.selectedCell
+      && this.selectedCell.id.x === cell.id.x
+      && this.selectedCell.id.y === cell.id.y
   }
 }
