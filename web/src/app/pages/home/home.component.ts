@@ -86,19 +86,39 @@ export class HomeComponent implements OnInit {
 
   draw(color: string) {
     if (this.selectedCell) {
-      this.drawingSocket.requestDraw({
-        color: color,
-        cell: this.selectedCell
-      })
-
-      this.selectedCell = undefined
+      this.drawIfColorIsNotTheSame(color, this.selectedCell)
     } else {
       this.openNoColorSelectedAlert()
     }
   }
 
+  private drawIfColorIsNotTheSame(color: string, selectedCell: Cell) {
+    if (color === selectedCell.color) {
+      this.sameColorAlert()
+    } else {
+      this.requestDraw(color, selectedCell);
+    }
+  }
+
+  private requestDraw(color: string, selectedCell: Cell) {
+    this.drawingSocket.requestDraw({
+      color: color,
+      cell: selectedCell
+    })
+
+    this.selectedCell = undefined
+  }
+
+
   changeDrawingColor($event: string) {
     this.drawingColor = $event
+  }
+
+  private sameColorAlert() {
+    this._snackBar.open('new color is same as original color of the pixel', 'dismiss', {
+      horizontalPosition: 'center',
+      verticalPosition: 'top',
+    })
   }
 
   private openCooldownAlert() {
@@ -187,4 +207,5 @@ export class HomeComponent implements OnInit {
   colorSelect(color: string) {
     this.selectedColor = color
   }
+
 }
