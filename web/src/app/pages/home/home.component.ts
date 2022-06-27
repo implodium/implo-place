@@ -6,7 +6,6 @@ import {UserService} from "../../services/user.service";
 import {GreetingService} from "../../services/greeting.service";
 import {CooldownSocketService} from "../../services/cooldown-socket.service";
 import Cooldown from "../../typings/cooldown";
-import {DrawRequest} from "../../typings/draw-request";
 import {DrawingSocketService} from "../../services/drawing-socket.service";
 import {BoardComponent} from "../../components/board/board.component";
 import {BoardService} from "../../services/board.service";
@@ -26,11 +25,14 @@ export class HomeComponent implements OnInit {
   board!: BoardComponent
 
   user?: UserResponseDto
+  fastmode: boolean = false
   cooldown?: Cooldown
   seconds: number = 0
   minutes: number = 0
   drawingColor: string = 'white'
   loadedCells: Cell[] = []
+  selectedCell?: Cell
+  selectedColor: string = "white"
   connectedUser: ConnectedUser[] = [
     {username: "smth", discriminator: "idjadf", id: "asidfjadsjfiojasdiofj"}
   ]
@@ -55,6 +57,7 @@ export class HomeComponent implements OnInit {
     this.subscribeToDrawingSocket()
     this.loadCells()
     this.connectUser()
+    this.unselectKeybinding()
   }
 
   private setInterval() {
@@ -78,16 +81,64 @@ export class HomeComponent implements OnInit {
     return this.greetingService.greeting
   }
 
-  draw($event: DrawRequest) {
-    this.drawingSocket.requestDraw($event)
+  cellSelect($event: Cell) {
+    if (this.canDraw) {
+      this.selectedCell = $event
+    } else {
+      this.openCooldownAlert()
+    }
   }
+
+  get canDraw() {
+    return this.cooldown !== undefined && !this.cooldown.active
+  }
+
+  draw(color: string) {
+    if (this.selectedCell) {
+      this.drawIfColorIsNotTheSame(color, this.selectedCell)
+    } else {
+      this.openNoColorSelectedAlert()
+    }
+  }
+
+  private drawIfColorIsNotTheSame(color: string, selectedCell: Cell) {
+    if (color === selectedCell.color) {
+      this.sameColorAlert()
+    } else {
+      this.requestDraw(color, selectedCell);
+    }
+  }
+
+  private requestDraw(color: string, selectedCell: Cell) {
+    this.drawingSocket.requestDraw({
+      color: color,
+      cell: selectedCell
+    })
+
+    this.selectedCell = undefined
+  }
+
 
   changeDrawingColor($event: string) {
     this.drawingColor = $event
   }
 
+  private sameColorAlert() {
+    this._snackBar.open('new color is same as original color of the pixel', 'dismiss', {
+      horizontalPosition: 'center',
+      verticalPosition: 'top',
+    })
+  }
+
   private openCooldownAlert() {
     this._snackBar.open('you are on cooldown', 'dismiss', {
+      horizontalPosition: 'center',
+      verticalPosition: 'top',
+    })
+  }
+
+  private openNoColorSelectedAlert() {
+    this._snackBar.open('no color is selected cant draw pixel', 'dismiss', {
       horizontalPosition: 'center',
       verticalPosition: 'top',
     })
@@ -102,7 +153,12 @@ export class HomeComponent implements OnInit {
   private registerUser() {
     this.userService.register()
     this.userService.user.get()
-      .subscribe(user => this.user = user)
+      .subscribe(user => {
+        this.user = user
+        this.fastmode = this.user
+          ? this.user.fastmode
+          : false
+      })
   }
 
   private subscribeToCooldownSocket() {
@@ -151,5 +207,30 @@ export class HomeComponent implements OnInit {
         })
       }
     })
+  }
+
+  get colorIsSelected(): boolean {
+    return this.selectedCell !== undefined
+  }
+
+  fastdraw(cell: Cell) {
+    this.selectedCell = cell
+    this.draw(this.selectedColor)
+  }
+
+  colorSelect(color: string) {
+    this.selectedColor = color
+  }
+
+  private unselectKeybinding() {
+    document.addEventListener('keydown', keyevent => {
+      if (keyevent.code === 'Escape') {
+        this.selectedCell = undefined
+      }
+    })
+  }
+
+  public toggleFastmode() {
+
   }
 }

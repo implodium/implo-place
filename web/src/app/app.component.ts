@@ -48,4 +48,8 @@ export class AppComponent {
     this.userService.clearName()
     await this.changeNameDialog.close()
   }
+
+  async toggleFastmode() {
+    this.userService.toggleFastmode()
+  }
 }

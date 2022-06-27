@@ -13,6 +13,14 @@
       <mat-icon>delete</mat-icon>
       <span>Clear Cookies</span>
     </button>
+    <button mat-menu-item (click)="toggleFastmode()">
+      <mat-icon>F</mat-icon>
+      <span>Toggle Fastmode</span>
+    </button>
+    <button mat-menu-item (click)="clearCookies()">
+      <mat-icon>logout</mat-icon>
+      <span>Log Out</span>
+    </button>
   </mat-menu>
 </nav>
 

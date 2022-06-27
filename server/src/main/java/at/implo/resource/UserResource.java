@@ -86,5 +86,22 @@ public class UserResource {
                 .build();
     }
 
+    @POST
+    @Path("toggle-fastmode")
+    public Response toggleFastmodeResource(@QueryParam("token") String token) {
+        if (token != null) {
+            return toggleFastmode(token);
+        } else {
+            return UserResource.tokenNotProvided();
+        }
+    }
+
+    private Response toggleFastmode(String token) {
+        val userResponse = discordController.getUserByToken(token);
+        val user = userController.toggleFastMode(userResponse);
+
+        return Response.ok(user)
+                .build();
+    }
 
 }

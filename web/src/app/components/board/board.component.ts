@@ -1,7 +1,5 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Cell} from "../../typings/cell";
-import {CooldownSocketService} from "../../services/cooldown-socket.service";
-import {DrawRequest} from "../../typings/draw-request";
 import {DrawResponse} from "../../typings/draw-response";
 
 @Component({
@@ -23,17 +21,26 @@ export class BoardComponent implements OnInit {
   @Input("can-draw")
   canDraw: boolean = true
 
-  @Output("draw")
-  draw: EventEmitter<DrawRequest> = new EventEmitter<DrawRequest>()
-
-  grid: Cell[][] = []
-
-  selectedCell?: Cell
+  @Input("fastmode")
+  fastmode: boolean = false
 
   @Input('definedCells')
   definedCells: Cell[] = []
 
-  constructor(private readonly cooldownSocket: CooldownSocketService) { }
+  @Input('cell-select')
+  cellIsSelected: boolean = false
+
+  @Output("cell-select")
+  cellSelectEvent: EventEmitter<Cell> = new EventEmitter<Cell>()
+
+  @Output("draw-color")
+  drawColorEvent: EventEmitter<Cell> = new EventEmitter<Cell>()
+
+  grid: Cell[][] = []
+
+  hoveringCell?: Cell
+
+  selectedCell?: Cell;
 
   ngOnInit(): void {
     this.constructGrid();
@@ -52,11 +59,18 @@ export class BoardComponent implements OnInit {
     }
   }
 
-  requestDraw(cell: Cell) {
-    this.draw.emit({
-      color: this.color,
-      cell
-    })
+  cellSelect(cell: Cell) {
+    this.selectedCell = cell
+
+    if (this.fastmode) {
+      this.drawColor(cell)
+    } else {
+      this.cellSelectEvent.emit(cell)
+    }
+  }
+
+  drawColor(cell: Cell) {
+    this.drawColorEvent.emit(cell)
   }
 
   visualizeDraw(response: DrawResponse) {
@@ -67,9 +81,9 @@ export class BoardComponent implements OnInit {
     }
   }
 
-  setSelected(cell: Cell) {
+  setHovering(cell: Cell) {
     if (cell && cell.user) {
-      this.selectedCell = cell
+      this.hoveringCell = cell
     }
   }
 
@@ -77,5 +91,22 @@ export class BoardComponent implements OnInit {
     this.definedCells.forEach(cell => {
       this.grid[cell.id.x][cell.id.y] = cell
     })
+  }
+
+  isSelected(cell: Cell) {
+    return !this.fastmode
+      && this.cellIsSelected
+      && this.canDraw
+      && this.selectedCell
+      && this.selectedCell.id.x === cell.id.x
+      && this.selectedCell.id.y === cell.id.y
+  }
+
+  get displayCell() {
+    if (this.fastmode) {
+      return this.hoveringCell
+    } else {
+      return this.selectedCell
+    }
   }
 }
