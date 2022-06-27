@@ -50,7 +50,6 @@ public class UserController {
                 responseDTO.id(),
                 responseDTO.username(),
                 responseDTO.discriminator(),
-                false,
                 false
         );
 
