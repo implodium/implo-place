@@ -24,7 +24,7 @@ public class User {
     private boolean displayNameOverwrite;
 
     @Getter @NonNull
-    private boolean fastmode;
+    private boolean fastmode = false;
 
     @OneToOne(cascade = CascadeType.ALL) @Getter
     private Cooldown cooldown = new Cooldown(this);
