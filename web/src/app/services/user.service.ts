@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
 import BaseRestService from "./base-rest-service";
-import {UserResponseDto} from "../typings/user-response-dto";
 import {HttpClient} from "@angular/common/http";
 import {ServerEnvironmentService} from "./server-environment.service";
-import {map, mergeMap, Observable} from "rxjs";
+import {mergeMap} from "rxjs";
 import {AuthService} from "./auth.service";
 import Store from "../store/Store";
 import {User} from "../typings/user";
@@ -76,6 +75,25 @@ export class UserService extends BaseRestService {
       mergeMap(token => {
         return this.http.post<User>(
           `${this.resourcePath}/clear-name?token=${token!.value}`,
+          null
+        )
+      })
+    )
+  }
+
+  toggleFastmode() {
+    const response = this.requestToggleFastmode()
+
+    response.subscribe(user => {
+      this.user.set(user)
+    })
+  }
+
+  private requestToggleFastmode() {
+    return this.auth.token.pipe(
+      mergeMap(token => {
+        return this.http.post<User>(
+          `${this.resourcePath}/toggle-fastmode?token=${token!.value}`,
           null
         )
       })

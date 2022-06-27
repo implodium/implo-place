@@ -50,6 +50,7 @@ public class UserController {
                 responseDTO.id(),
                 responseDTO.username(),
                 responseDTO.discriminator(),
+                false,
                 false
         );
 
@@ -69,6 +70,14 @@ public class UserController {
         val user = this.userDao.findById(response.id());
         user.setDisplayName(response.username());
         user.setDisplayNameOverwrite(false);
+
+        return user;
+    }
+
+    @Transactional
+    public User toggleFastMode(UserResponseDTO response) {
+        val user = this.userDao.findById(response.id());
+        user.setFastmode(!user.isFastmode());
 
         return user;
     }

@@ -153,7 +153,12 @@ export class HomeComponent implements OnInit {
   private registerUser() {
     this.userService.register()
     this.userService.user.get()
-      .subscribe(user => this.user = user)
+      .subscribe(user => {
+        this.user = user
+        this.fastmode = this.user
+          ? this.user.fastmode
+          : false
+      })
   }
 
   private subscribeToCooldownSocket() {
@@ -223,5 +228,9 @@ export class HomeComponent implements OnInit {
         this.selectedCell = undefined
       }
     })
+  }
+
+  public toggleFastmode() {
+
   }
 }
