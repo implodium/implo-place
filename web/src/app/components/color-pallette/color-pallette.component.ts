@@ -1,5 +1,4 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {DrawRequest} from "../../typings/draw-request";
 
 @Component({
   selector: 'app-color-pallette',
@@ -32,6 +31,8 @@ export class ColorPalletteComponent implements OnInit {
 
   @Output('change-color')
   changeColorEvent: EventEmitter<string> = new EventEmitter<string>()
+
+  colorPickerColor: string = 'orange'
 
   constructor() { }
 

@@ -7,5 +7,17 @@
     (click)="changeSelected(color)"
   ></div>
 
+  <div
+    class="color color-picker-container"
+    [class.selected]="this.selected == colorPickerColor"
+  >
+    <input
+      type="color"
+      class="color-picker"
+      [(ngModel)]="colorPickerColor"
+      (input)="changeSelected(colorPickerColor)"
+    >
+  </div>
+
   <button class="draw-button" (click)="draw()" [class.hidden]="fastmode">draw</button>
 </div>
