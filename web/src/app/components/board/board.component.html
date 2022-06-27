@@ -1,7 +1,17 @@
 
 <div class="board-container">
 
-  <h1>{{hoveringCell && hoveringCell.user ? hoveringCell.user.displayName + '#' + hoveringCell.user.discriminator : 'none'}}</h1>
+  <div *ngIf="displayCell && displayCell.user; else infoUndefined" class="information-bar">
+    <h1>{{ displayCell.user.displayName + '#' + displayCell.user.discriminator}}</h1>
+    <h1>{{ displayCell.color }}</h1>
+  </div>
+
+  <ng-template #infoUndefined >
+    <div class="information-bar">
+      <h1>none</h1>
+      <h1>white</h1>
+    </div>
+  </ng-template>
 
   <div class="board">
     <div *ngFor="let column of grid" class="column">

@@ -1,9 +1,6 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Cell} from "../../typings/cell";
-import {CooldownSocketService} from "../../services/cooldown-socket.service";
-import {DrawRequest} from "../../typings/draw-request";
 import {DrawResponse} from "../../typings/draw-response";
-import {D} from "@angular/cdk/keycodes";
 
 @Component({
   selector: 'app-board',
@@ -44,8 +41,6 @@ export class BoardComponent implements OnInit {
   hoveringCell?: Cell
 
   selectedCell?: Cell;
-
-  constructor(private readonly cooldownSocket: CooldownSocketService) { }
 
   ngOnInit(): void {
     this.constructGrid();
@@ -105,5 +100,13 @@ export class BoardComponent implements OnInit {
       && this.selectedCell
       && this.selectedCell.id.x === cell.id.x
       && this.selectedCell.id.y === cell.id.y
+  }
+
+  get displayCell() {
+    if (this.fastmode) {
+      return this.hoveringCell
+    } else {
+      return this.selectedCell
+    }
   }
 }

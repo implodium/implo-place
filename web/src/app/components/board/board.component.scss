@@ -4,6 +4,12 @@
   to {transform: scale(1)}
 }
 
+.information-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
 .board {
   display: flex;
   border: 2px solid black;
