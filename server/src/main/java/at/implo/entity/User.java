@@ -27,5 +27,11 @@ public class User {
     private Cooldown cooldown = new Cooldown(this);
 
     @OneToOne(cascade = CascadeType.ALL)
-    @Getter private UserSetting settings = new UserSetting();
+    private UserSetting settings = new UserSetting();
+
+    @Transient
+    public UserSetting getSettings() {
+        if (settings == null) settings = new UserSetting();
+        return settings;
+    }
 }
