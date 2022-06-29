@@ -156,7 +156,7 @@ export class HomeComponent implements OnInit {
       .subscribe(user => {
         this.user = user
         this.fastmode = this.user
-          ? this.user.fastmode
+          ? this.user.settings.fastmode
           : false
       })
   }
@@ -228,9 +228,5 @@ export class HomeComponent implements OnInit {
         this.selectedCell = undefined
       }
     })
-  }
-
-  public toggleFastmode() {
-
   }
 }

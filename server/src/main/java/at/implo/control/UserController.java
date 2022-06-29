@@ -76,7 +76,8 @@ public class UserController {
     @Transactional
     public User toggleFastMode(UserResponseDTO response) {
         val user = this.userDao.findById(response.id());
-        user.setFastmode(!user.isFastmode());
+        val settings = user.getSettings();
+        settings.setFastmode(!settings.isFastmode());
 
         return user;
     }
