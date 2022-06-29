@@ -2,11 +2,13 @@ package at.implo.control;
 
 import at.implo.dao.UserDao;
 import at.implo.dto.UserResponseDTO;
-import at.implo.entity.Cooldown;
 import at.implo.entity.User;
+import at.implo.entity.UserSetting;
+import io.quarkus.runtime.StartupEvent;
 import lombok.val;
 
 import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.event.Observes;
 import javax.inject.Inject;
 import javax.transaction.Transactional;
 
@@ -80,5 +82,21 @@ public class UserController {
         settings.setFastmode(!settings.isFastmode());
 
         return user;
+    }
+
+    void init(@Observes StartupEvent event) {
+        initializeSettingsOnAllUsers();
+    }
+
+    @Transactional
+    public void initializeSettingsOnAllUsers() {
+        val allUsers = userDao.findAll().list();
+
+        for (val user : allUsers) {
+            if (user.getSettings() == null) {
+                user.setSettings(new UserSetting());
+                userDao.save(user);
+            }
+        }
     }
 }
